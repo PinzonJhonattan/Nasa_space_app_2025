@@ -1,0 +1,56 @@
+<p-card styleClass="precipitation-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Precipitation</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+        
+        <div class="weather-overlay">
+            <div class="variable-info">
+                <span class="variable-name">{{ variableName }}</span>
+                <span class="pointer-data" *ngIf="pointerData">{{ pointerData }}</span>
+            </div>
+        </div>
+    </div>
+<p-dialog header="🌧️ Precipitation Map - Complete Information" 
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: '50rem' }" 
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+          [maximizable]="true"
+          styleClass="weather-dialog">
+    <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Precipitation Map?</h1>
+
+        <p class="text-center mb-4">
+            This map shows the amount of precipitation (rain, snow, hail) that has fallen or is forecasted to fall in a specific area during a given period. It is commonly measured in millimeters (mm) or inches. It is an essential tool for water resource management, agriculture, and natural disaster prevention.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Positive Aspects</h3>
+                <ul>
+                    <li>• Vital for agricultural planning and crop management.</li>
+                    <li>• Allows for efficient management of water resources (reservoirs, rivers).</li>
+                    <li>• Helps to forecast and prepare for water availability.</li>
+                    <li>• Fundamental for climate studies and ecosystem monitoring.</li>
+                </ul>
+            </div>
+
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Negative Aspects</h3>
+                <ul>
+                    <li>• High concentrations can warn about floods and landslides.</li>
+                    <li>• The absence of precipitation indicates drought conditions and fire risk.</li>
+                    <li>• Intense rainfall can cause soil erosion and infrastructure damage.</li>
+                    <li>• Accurate interpretation depends on a dense network of weather stations.</li>
+                </ul>
+            </div>
+        </div>
+            <p-button label="More information?" (onClick)="openMoreInfoPrecipitation()"></p-button>
+    </div>
+</p-dialog>
+</p-card>

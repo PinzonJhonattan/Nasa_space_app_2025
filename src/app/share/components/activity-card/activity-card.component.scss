@@ -1,0 +1,69 @@
+// Estilos para las cards de actividades
+.activity-card {
+  width: 100%;
+  min-height: 400px;
+  max-width: 320px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Estilos para las imágenes cuadradas
+::ng-deep .p-card-header {
+  padding: 0;
+  overflow: hidden;
+  background: white;
+
+  img {
+    width: 100%;
+    height: 200px; // Altura fija para hacer cuadrada
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    background: transparent;
+  }
+}
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+p-card {
+  background-color: var(--p-surface-0) !important;
+  border: 1px solid var(--p-surface-200);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:host-context(.my-app-dark) p-card {
+  background-color: var(--p-surface-800) !important;
+  border-color: var(--p-surface-700);
+}
+
+// Asegurar que el contenido se distribuya uniformemente
+::ng-deep .p-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.5rem;
+}
+
+::ng-deep .p-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .p-card-footer {
+  margin-top: auto;
+  padding: 1rem 1.5rem 1.5rem;
+}

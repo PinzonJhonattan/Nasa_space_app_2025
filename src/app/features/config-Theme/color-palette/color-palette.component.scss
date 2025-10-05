@@ -1,0 +1,154 @@
+.nasa-color-palette-panel {
+  display: block;
+  position: relative;
+  border-radius: 1px;
+  border: 1px solid var(--p-surface-border);
+  background-color: var(--p-surface-card);
+  padding: 24px;
+  width: 290px;
+  
+
+  .nasa-color-palette-label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--p-text-color);
+  }
+
+  .nasa-color-palette {
+    margin-bottom: 24px;
+
+    .nasa-color-palette-items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      .nasa-color-palette-item {
+        min-height: 25px;
+        min-width: 25px;
+        border-radius: 50%;
+        border: 2px solid var(--p-surface-border);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        &.nasa-color-palette-selected,
+        &.nasa-surface-color-palette-selected {
+          outline: 3px solid var(--p-primary-color);
+          outline-offset: 2px;
+        }
+
+        &.nasa-color-palette-amber {
+          background-color: var(--p-amber-500);
+        }
+
+        &.nasa-color-palette-beach {
+          background-color: var(--p-beach-500);
+        }
+
+        &.nasa-color-palette-blue {
+          background-color: var(--p-blue-500);
+        }
+
+        &.nasa-color-palette-brown {
+          background-color: var(--p-brown-500);
+        }
+
+        &.nasa-color-palette-cyan {
+          background-color: var(--p-cyan-500);
+        }
+
+        &.nasa-color-palette-emerald {
+          background-color: var(--p-emerald-500);
+        }
+
+        &.nasa-color-palette-fuchsia {
+          background-color: var(--p-fuchsia-500);
+        }
+
+        &.nasa-color-palette-gray {
+          background-color: var(--p-gray-500);
+        }
+
+        &.nasa-color-palette-green {
+          background-color: var(--p-green-500);
+        }
+
+        &.nasa-color-palette-indigo {
+          background-color: var(--p-indigo-500);
+        }
+
+        &.nasa-color-palette-lime {
+          background-color: var(--p-lime-500);
+        }
+
+        &.nasa-color-palette-neutral {
+          background-color: var(--p-neutral-500);
+        }
+
+        &.nasa-color-palette-ocean {
+          background-color: var(--p-ocean-500);
+        }
+
+        &.nasa-color-palette-orange {
+          background-color: var(--p-orange-500);
+        }
+
+        &.nasa-color-palette-pink {
+          background-color: var(--p-pink-500);
+        }
+
+        &.nasa-color-palette-purple {
+          background-color: var(--p-purple-500);
+        }
+
+        &.nasa-color-palette-red {
+          background-color: var(--p-red-500);
+        }
+
+        &.nasa-color-palette-sky {
+          background-color: var(--p-sky-500);
+        }
+
+        &.nasa-color-palette-slate {
+          background-color: var(--p-slate-500);
+        }
+
+        &.nasa-color-palette-soho {
+          background-color: var(--p-soho-500);
+        }
+
+        &.nasa-color-palette-stone {
+          background-color: var(--p-stone-500);
+        }
+
+        &.nasa-color-palette-teal {
+          background-color: var(--p-teal-500);
+        }
+
+        &.nasa-color-palette-violet {
+          background-color: var(--p-violet-500);
+        }
+
+        &.nasa-color-palette-viva {
+          background-color: var(--p-viva-500);
+        }
+
+        &.nasa-color-palette-yellow {
+          background-color: var(--p-yellow-500);
+        }
+
+        &.nasa-color-palette-zinc {
+          background-color: var(--p-zinc-500);
+        } 
+        
+      }
+    }
+  }
+}

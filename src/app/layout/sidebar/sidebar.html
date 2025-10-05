@@ -1,0 +1,70 @@
+<!-- sidebar.html -->
+<div class="modern-sidebar" [ngClass]="{'collapsed': isCollapsed()}">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+        <div >
+            <!--<div class="flex justify-center items-center p-4">
+                <img class="w-30 h-auto" src="assets/imagenes/capi_logo.svg" alt="logo" />
+            </div>-->
+            <div class="flex justify-center items-center p-4 text-2xl font-bold">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">AstroChiguis</h1>
+            </div>
+        </div>
+        <!-- <button
+            pButton
+            type="button"
+            class="p-button-text collapse-btn"
+            [icon]="isCollapsed() ? 'pi pi-angle-right' : 'pi pi-angle-left'"
+            (click)="toggleSidebar()">
+        </button> -->
+    </div>
+
+    <!-- Botón Nueva Actividad -->
+    <div class="new-activity-section">
+        <p-button
+            label="New Activity"
+            icon="pi pi-plus"
+            severity="primary"
+            size="small"
+            class="new-activity-btn w-full"
+            (onClick)="navigateToNewActivity()">
+        </p-button>
+    </div>
+
+    <!-- User Profile Section -->
+   <!-- <div class="user-profile">
+        <p-avatar
+            image="assets/imagenes/capi2.jpeg"
+            size="large"
+            shape="circle"
+            class="user-avatar">
+        </p-avatar>
+        <div class="user-info">
+            <h4>Capitan Chiguieros</h4>
+            <span class="user-role">Administrator</span>
+        </div>
+        <div class="user-status">
+            <i class="pi pi-circle-fill status-online"></i>
+        </div>
+    </div> -->
+
+    <!-- Navigation Menu -->
+    <div class="sidebar-content">
+        <p-panelmenu
+            [model]="items"
+            class="sidebar-menu"
+            [multiple]="true">
+        </p-panelmenu>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <div class="flex justify-center items-center p-4">
+        <img src="assets/imagenes/logitonasa.png" alt="logo" />
+        </div>
+    </div>
+    <p-drawer [(visible)]="visible"  position="right">
+        <app-config-theme></app-config-theme>
+    </p-drawer>
+
+</div>

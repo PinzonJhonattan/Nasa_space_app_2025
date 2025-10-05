@@ -1,0 +1,30 @@
+export interface MenuItem {
+    label?: string;
+    icon?: string;
+    routerLink?: string | string[];
+    url?: string;
+    target?: string;
+    items?: MenuItem[];
+    expanded?: boolean;
+    disabled?: boolean;
+    visible?: boolean;
+    badge?: string;
+    badgeStyleClass?: string;
+    tooltip?: string;
+    tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
+    command?: (event?: any) => void;
+    separator?: boolean;
+    styleClass?: string;
+    automationId?: string;
+    tabindex?: string;
+    queryParams?: { [key: string]: any };
+    fragment?: string;
+    queryParamsHandling?: 'merge' | 'preserve' | '';
+    preserveFragment?: boolean;
+    skipLocationChange?: boolean;
+    replaceUrl?: boolean;
+    state?: { [key: string]: any };
+    role?: string;
+    ariaLabel?: string;
+    id?: string;
+  }

@@ -1,0 +1,8 @@
+p-card {
+    background-color: var(--p-surface-300) !important;
+} 
+
+
+:host-context(.my-app-dark) .p-card {
+    background-color: var(--p-surface-800) !important;
+}

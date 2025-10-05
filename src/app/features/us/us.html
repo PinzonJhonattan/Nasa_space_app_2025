@@ -1,0 +1,158 @@
+<!-- Container principal con padding y height completa -->
+<div class="min-h-screen p-6">
+  
+  <!-- Título de la sección -->
+  <div class="text-center mb-8">
+    <h2 class="text-2xl md:text-3xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
+      Our Team
+    </h2>
+    <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-blue-600 mx-auto rounded-full"></div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 h-[700px]">
+      
+      <!-- Columna izquierda - Lista de miembros (más ancha) -->
+      <div class="lg:col-span-2">
+        
+          <div class="space-y-6 p-2">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center">
+              Team Members
+            </h3>
+            
+            <div 
+              *ngFor="let member of teamMembers; let i = index"
+              class="member-item p-6 rounded-xl cursor-pointer transition-all duration-300 hover:scale-102"
+              [class.active]="selectedMember === member"
+              (mouseenter)="selectMember(member)"
+            >
+              <div class="flex items-center space-x-6">
+                <div class="relative flex-shrink-0">
+                  <img 
+                    [src]="member.photo" 
+                    [alt]="member.name"
+                    class="w-24 h-24 rounded-full object-cover border-4 transition-all duration-300 shadow-lg"
+                    [class.border-blue-500]="selectedMember === member"
+                    [class.border-gray-300]="selectedMember !== member"
+                    [class.shadow-blue-500/30]="selectedMember === member"
+                  />
+                  <div 
+                    *ngIf="selectedMember === member"
+                    class="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg"
+                  >
+                    <i class="pi pi-check text-white text-sm"></i>
+                  </div>
+                </div>
+                
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-bold text-gray-800 dark:text-white text-lg truncate">
+                    {{ member.name }}
+                  </h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {{ member.professionalTitle }}
+                  </p>
+                  <p class="text-xs text-blue-600 dark:text-blue-400 mt-2 opacity-75">
+                    Hover to view details
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+
+      <!-- Columna derecha - Panel de detalles -->
+      <div class="lg:col-span-3">
+        
+          <!-- Panel por defecto - Logo del equipo -->
+          <div 
+            *ngIf="!selectedMember" 
+            class="h-full flex flex-col items-center justify-center text-center space-y-6 team-logo-panel"
+          >
+            <div class="relative">
+              <img 
+                src="assets/imagenes/capi_logito.svg" 
+                alt="AstroChiquis Team Logo"
+                class="w-80 h-80 object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-blue-500/20 via-transparent to-transparent rounded-full"></div>
+            </div>
+            
+            <div class="space-y-3">
+              <h3 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                AstroChiquis
+              </h3>
+              <p class="text-lg text-gray-600 dark:text-gray-300 max-w-md">
+                Expert team developing innovative weather prediction solutions using NASA data
+              </p>
+              <div class="flex items-center justify-center space-x-2">
+                <i class="pi pi-star-fill text-yellow-400"></i>
+                <span class="text-sm text-gray-500 dark:text-gray-400">NASA Space Apps 2025</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel de detalles del miembro seleccionado -->
+          <div 
+            *ngIf="selectedMember" 
+            class="h-full flex flex-col items-center justify-center text-center space-y-6 member-details-panel"
+            [@slideIn]
+          >
+            <div class="relative">
+              <img 
+                [src]="selectedMember.photo"
+                [alt]="selectedMember.name"
+                class="w-48 h-48 rounded-full object-cover shadow-2xl border-4 border-blue-500"
+              />
+              <div class="absolute inset-0 rounded-full bg-gradient-to-t from-blue-500/30 via-transparent to-transparent"></div>
+            </div>
+
+            <div class="space-y-4 max-w-md">
+              <div>
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                  {{ selectedMember.name }}
+                </h3>
+                <p class="text-xl text-blue-600 dark:text-blue-400 font-medium">
+                  {{ selectedMember.professionalTitle }}
+                </p>
+              </div>
+
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                {{ selectedMember.description }}
+              </p>
+
+              <!-- Enlaces sociales -->
+              <div class="flex justify-center space-x-6 pt-4">
+                <a 
+                  [href]="selectedMember.linkedin" 
+                  target="_blank"
+                  class="social-link linkedin"
+                >
+                  <i class="pi pi-linkedin text-2xl"></i>
+                </a>
+                <a 
+                  [href]="selectedMember.instagram" 
+                  target="_blank"
+                  class="social-link instagram"
+                >
+                  <i class="pi pi-instagram text-2xl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Partículas decorativas -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+    <div class="absolute top-40 right-20 w-1 h-1 bg-blue-500 rounded-full animate-ping"></div>
+    <div class="absolute bottom-40 left-1/4 w-1 h-1 bg-blue-300 rounded-full animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+  </div>
+
+</div>

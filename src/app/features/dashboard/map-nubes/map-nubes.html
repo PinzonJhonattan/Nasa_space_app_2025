@@ -1,0 +1,59 @@
+<p-card styleClass="clouds-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Cloud Coverage</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+        
+        <div class="weather-overlay">
+            <div class="variable-info">
+                <span class="variable-name">{{ variableName }}</span>
+                <span class="pointer-data" *ngIf="pointerData">{{ pointerData }}</span>
+            </div>
+        </div>
+    </div>
+<p-dialog header="☁️ Cloud Coverage Map - Complete Information" 
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: '50rem' }" 
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+          [maximizable]="true"
+          styleClass="weather-dialog">
+    
+    <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Cloud Map?</h1>
+
+        <p class="text-center mb-4">
+            This map, typically obtained from satellite images, shows the distribution and coverage of clouds over a region. It uses different channels (visible, infrared) to show not only where the clouds are, but also characteristics like their thickness, altitude, and temperature. It is essential for identifying fronts, storms, and clear weather zones. ☁️
+        </p>
+
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Positive Aspects</h3>
+                <ul>
+                    <li>• Provides a <strong>broad and continuous view</strong> of meteorological systems.</li>
+                    <li>• Allows for the identification of the formation and progression of <strong>fronts, cyclones, and hurricanes</strong>.</li>
+                    <li>• The infrared channel helps detect clouds with great vertical development (storms) even at night.</li>
+                    <li>• It is key for short and medium-term weather forecasting.</li>
+                </ul>
+            </div>
+
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Negative Aspects</h3>
+                <ul>
+                    <li>• The visible image is <strong>useless at night</strong>.</li>
+                    <li>• It can be difficult to distinguish between low clouds, fog, and snow on the ground without expert analysis.</li>
+                    <li>• It does not directly measure precipitation; it only shows the clouds that could generate it.</li>
+                    <li>• The resolution may be insufficient to detect very small or localized phenomena.</li>
+                </ul>
+            </div>
+        </div>
+        <p-button label="More information?" (onClick)="openMoreInfoClouds()"></p-button>
+    </div>
+</p-dialog>
+</p-card>

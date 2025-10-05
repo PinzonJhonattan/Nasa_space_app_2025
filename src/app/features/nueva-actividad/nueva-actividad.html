@@ -1,0 +1,157 @@
+<!-- new-activity.html -->
+<div class="new-activity-container">
+  <div class="header-section pt-15">
+    <h1>New Custom Activity</h1>
+    <p>Create your own activity to receive tailored weather insights</p>
+  </div>
+
+  <div class="form-container">
+    <p-card styleClass="form-card">
+      <form [formGroup]="activityForm" (ngSubmit)="onSubmit()" class="activity-form">
+        <!-- Title -->
+        <div class="form-field form-field--half">
+          <label for="title" class="field-label">Activity Title *</label>
+          <input
+            pInputText
+            id="title"
+            formControlName="title"
+            placeholder="E.g. Mountain biking, Gardening, etc."
+            class="w-full"
+            [class.ng-invalid]="title?.touched && title?.invalid" />
+          @if (getFieldError('title')) {
+            <small class="error-message">{{ getFieldError('title') }}</small>
+          }
+        </div>
+
+        <!-- Category -->
+        <div class="form-field form-field--half">
+          <label for="category" class="field-label">Category *</label>
+          <p-select
+            formControlName="category"
+            [options]="allCategoryOptions"
+            placeholder="Select a category"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+            (onChange)="onCategoryChange($event)"
+            [class.ng-invalid]="category?.touched && category?.invalid">
+          </p-select>
+          @if (getFieldError('category')) {
+            <small class="error-message">{{ getFieldError('category') }}</small>
+          }
+        </div>
+
+        <!-- New Category (conditional) -->
+        @if (showNewCategoryInput()) {
+          <div class="form-field form-field--full">
+            <label for="newCategory" class="field-label">New Category Name *</label>
+            <input
+              pInputText
+              id="newCategory"
+              formControlName="newCategory"
+              placeholder="E.g. Science, Art, Music..."
+              class="w-full"
+              [class.ng-invalid]="newCategory?.touched && newCategory?.invalid" />
+            @if (getFieldError('newCategory')) {
+              <small class="error-message">{{ getFieldError('newCategory') }}</small>
+            }
+          </div>
+        }
+
+        <!-- Description -->
+        <div class="form-field form-field--full">
+          <label for="description" class="field-label">Description *</label>
+          <textarea
+            pTextarea
+            id="description"
+            formControlName="description"
+            placeholder="Briefly describe your activity and why weather matters..."
+            rows="3"
+            class="w-full"
+            [class.ng-invalid]="description?.touched && description?.invalid">
+          </textarea>
+          @if (getFieldError('description')) {
+            <small class="error-message">{{ getFieldError('description') }}</small>
+          }
+        </div>
+
+        <!-- Image Selection -->
+        <div class="form-field form-field--full image-field">
+          <label class="field-label">Image *</label>
+
+          <div class="image-selector-grid">
+            <div class="compact-image-selection">
+              <div class="predefined-images-compact">
+                @for (image of predefinedImages; track image) {
+                  <div
+                    class="image-option-compact"
+                    [class.selected]="imageUrl?.value === image"
+                    (click)="selectPredefinedImage(image)">
+                    <img [src]="image" [alt]="'Image ' + $index" />
+                  </div>
+                }
+              </div>
+
+              <div class="custom-url-toggle">
+                <p-button
+                  type="button"
+                  label="Custom URL"
+                  icon="pi pi-link"
+                  severity="secondary"
+                  size="small"
+                  text="true"
+                  (onClick)="toggleCustomImageUrl()">
+                </p-button>
+              </div>
+
+              @if (showCustomImageUrl()) {
+                <div class="custom-url-section-compact">
+                  <input
+                    pInputText
+                    formControlName="imageUrl"
+                    placeholder="https://example.com/my-image.jpg"
+                    class="w-full"
+                    [class.ng-invalid]="imageUrl?.touched && imageUrl?.invalid" />
+                </div>
+              }
+            </div>
+
+
+          </div>
+
+          @if (getFieldError('imageUrl')) {
+            <small class="error-message">{{ getFieldError('imageUrl') }}</small>
+          }
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <p-button
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            (onClick)="onCancel()"
+            [disabled]="isLoading()">
+          </p-button>
+
+          <p-button
+            type="submit"
+            label="Create Activity"
+            severity="primary"
+            [loading]="isLoading()"
+            loadingIcon="pi pi-spinner"
+            [disabled]="activityForm.invalid">
+          </p-button>
+        </div>
+      </form>
+    </p-card>
+  </div>
+
+  <p-toast position="top-right"></p-toast>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+.layout {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, rgba(15, 23, 42, 0.9) 45%, #020617 100%);
+  color: var(--p-text-color);
+
+  header {
+    margin-left: 280px; // El mismo ancho del sidebar
+    transition: margin-left 0.3s ease;
+  }
+
+  main {
+    margin-left: 280px; // El mismo ancho del sidebar
+    transition: margin-left 0.3s ease;
+    background: transparent;
+  }
+
+  footer {
+    margin-left: 280px; // También el footer si quieres
+    transition: margin-left 0.3s ease;
+  }
+
+  // Cuando el sidebar está colapsado
+  &.sidebar-collapsed {
+    header {
+      margin-left: 70px; // El ancho del sidebar colapsado
+    }
+
+    main {
+      margin-left: 70px;
+    }
+
+    footer {
+      margin-left: 70px;
+    }
+  }
+}
+
+// Botón flotante de configuración en la parte superior
+.floating-config-btn-top {
+  position: fixed !important;
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 8px !important;
+  background-color: #6b7280 !important;
+  border: 1px solid #4b5563 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  z-index: 1000 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  &:hover {
+    background-color: #4b5563 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  &:active {
+    transform: translateY(0) !important;
+  }
+
+  .pi {
+    font-size: 1.1rem !important;
+    color: #f3f4f6 !important;
+  }
+}
+
+.layout app-stars-background {
+  z-index: 0;
+}
+
+.layout main,
+.layout header,
+.layout footer,
+.layout .floating-config-btn-top,
+.layout app-sidebar {
+  position: relative;
+  z-index: 1;
+}

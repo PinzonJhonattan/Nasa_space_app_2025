@@ -1,0 +1,61 @@
+<p-card styleClass="pressure-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Atmospheric Pressure</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+        
+        <div class="weather-overlay">
+            <div class="variable-info">
+                <span class="variable-name">{{ variableName }}</span>
+                <span class="pointer-data" *ngIf="pointerData">{{ pointerData }}</span>
+            </div>
+        </div>
+    </div>
+</p-card>
+
+<p-dialog header="🌪️ Atmospheric Pressure Map - Complete Information" 
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: '50rem' }" 
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+          [maximizable]="true"
+          styleClass="weather-dialog">
+    
+    <div class="dialog-content">
+        <div class="flex flex-col items-center justify-center p-8">
+            <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Pressure Map?</h1>
+
+            <p class="text-center mb-4">
+                This map visualizes variations in atmospheric pressure (in hectopascals or millibars) at sea level or in the upper atmosphere. It shows centers of high and low pressure, crucial elements for wind formation and weather forecasting.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+                <div class="justify-center items-center">
+                    <h3 class="text-lg md:text-xl font-bold mb-4 justify-center items-center">Positive Aspects ✅</h3>
+                    <ul>
+                        <li>• Fundamental for meteorological and climate forecasting.</li>
+                        <li>• High pressure usually brings good weather and stability.</li>
+                        <li>• Guide for air and maritime navigation (route planning).</li>
+                        <li>• Helps understand global atmospheric circulation.</li>
+                    </ul>
+                </div>
+
+                <div class="justify-center items-center">
+                    <h3 class="text-lg md:text-xl font-bold mb-4 justify-center items-center">Negative Aspects ⚠️</h3>
+                    <ul>
+                        <li>• Low pressure is associated with storms and bad weather.</li>
+                        <li>• Sudden changes can affect people with health issues.</li>
+                        <li>• Creation of strong winds and destructive cyclonic systems.</li>
+                        <li>• Complex prediction that requires advanced models.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p-button label="More information?" (onClick)="openMoreInfoPressure()"></p-button>
+        </div>
+    </div>
+</p-dialog>

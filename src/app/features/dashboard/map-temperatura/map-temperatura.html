@@ -1,0 +1,59 @@
+<p-card styleClass="weather-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Temperature Map</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+        
+        <div class="weather-overlay">
+            <div class="variable-info">
+                <span class="variable-name">{{ variableName }}</span>
+                <span class="pointer-data" *ngIf="pointerData">{{ pointerData }}</span>
+            </div>
+        </div>
+    </div>
+    
+<p-dialog header="🌡️ Temperature Map - Complete Information" 
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: '50rem' }" 
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+          [maximizable]="true"
+          styleClass="weather-dialog">
+    
+    <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Temperature Map?</h1>
+
+        <p class="text-center mb-4">
+            This map shows the distribution of heat on the Earth's surface and the atmosphere in real-time or projected. 
+            Temperature is influenced by solar radiation, altitude, latitude, proximity to the sea, and atmospheric circulation 
+            patterns, making it fundamental to the climate.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold mb-4">Positive Aspects</h3>
+                <ul>
+                    <li>• Suitable climate for agriculture and ecosystem growth.</li>
+                    <li>• Allows for human habitability in various areas of the planet.</li>
+                    <li>• Influences the water cycle, which is essential for life.</li>
+                    <li>• Facilitates the prediction of heat or cold waves for preparation.</li>
+                </ul>
+            </div>
+
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold mb-4">Negative Aspects</h3>
+                <ul>
+                    <li>• Global warming causes extreme weather events.</li>
+                    <li>• Heat waves leading to dehydration and risk of death.</li>
+                    <li>• Sub-zero temperatures that damage crops and infrastructure.</li>
+                </ul>
+            </div>
+        </div>
+        <p-button label="More information?" (onClick)="openMoreInfoTemperature()" class="mt-4"></p-button>
+    </div>
+</p-dialog>
+</p-card>

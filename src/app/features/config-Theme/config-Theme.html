@@ -1,0 +1,35 @@
+<div class="config-theme">
+
+  <div class="config-theme-controls">
+    <div class="theme-control-group">
+      <div class="theme-control-group-label">
+        <h3>Color Scheme</h3> 
+      </div>
+
+    
+
+    </div>
+
+    <div class="theme-control-group">
+      <div class="theme-controls">
+        <nasa-color-palette class="nasa-color-picker"></nasa-color-palette>
+      </div>
+     <h2 class="font-bold mt-5 mb-3">Theme Mode</h2>
+      <div class="card flex ">
+      <p-selectButton 
+        [options]="stateOptions" 
+        [(ngModel)]="value" 
+        optionLabel="label" 
+        optionValue="value" 
+        aria-labelledby="basic" 
+        (onChange)="onThemeChange($event)"
+        class="ml-5"
+        />
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+

@@ -1,0 +1,39 @@
+<div class="col-12 lg:col-6 m-6">
+    <!-- Header Card con título y descripción -->
+    <p-card class="my-10 shadow-xl backdrop-blur-sm bg-black/10 dark:bg-white/5 rounded-2xl">
+        <div class="text-center p-10 ">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">Global climate</h1>
+            <p class="mt-4 text-gray-300 text-2xl">
+                In real time
+            </p>
+        </div>
+    </p-card>
+
+    <!-- Grid de Mapas Meteorológicos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+        <div class="col-span-1">
+            <app-map-viento></app-map-viento>
+        </div>
+
+        <div class="col-span-1">
+            <app-map-temperatura></app-map-temperatura>
+        </div>
+
+        <div class="col-span-1">
+            <app-map-presion></app-map-presion>
+        </div>
+
+
+        <div class="col-span-1">
+            <app-map-precipitacion></app-map-precipitacion>
+        </div>
+
+        <div class="col-span-1">
+            <app-map-radar></app-map-radar>
+        </div>
+
+        <div class="col-span-1">
+            <app-map-nubes></app-map-nubes>
+        </div>
+    </div>
+</div>

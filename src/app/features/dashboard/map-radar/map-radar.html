@@ -1,0 +1,57 @@
+<p-card styleClass="radar-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Weather Radar</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+        
+        <div class="weather-overlay">
+            <div class="variable-info">
+                <span class="variable-name">{{ variableName }}</span>
+                <span class="pointer-data" *ngIf="pointerData">{{ pointerData }}</span>
+            </div>
+        </div>
+    </div>
+<p-dialog header="📡 Weather Radar Map - Complete Information" 
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: '50rem' }" 
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+          [maximizable]="true"
+          styleClass="weather-dialog">
+    <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Radar Map?</h1>
+
+        <p class="text-center mb-4">
+            This map visualizes in real-time the location, intensity, and movement of precipitation (rain, snow, or hail) detected by a weather radar. The radar emits radio waves that bounce off water droplets, and by measuring the time and intensity of the return signal, it can determine where it is raining and how heavily. It is a crucial tool for very short-term forecasting.
+        </p>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Positive Aspects</h3>
+                <ul>
+                    <li>• Provides precipitation data in real-time.</li>
+                    <li>• Allows for tracking the exact trajectory and speed of storms.</li>
+                    <li>• It is essential for issuing early warnings of severe weather (floods, tornadoes).</li>
+                    <li>• Helps to estimate the amount of rain that has fallen in an area.</li>
+                </ul>
+            </div>
+
+            <div class="justify-center items-center">
+                <h3 class="text-lg md:text-xl font-bold justify-center items-center mb-4">Negative Aspects</h3>
+                <ul>
+                    <li>• The radar range is limited and can be blocked by mountains or other obstacles.</li>
+                    <li>• It may incorrectly interpret non-precipitation objects (birds, insects) as "false echoes."</li>
+                    <li>• Signal intensity weakens with distance, which can underestimate far-away rain.</li>
+                    <li>• Requires constant maintenance and precise calibration to be reliable.</li>
+                </ul>
+            </div>
+        </div>
+        <p-button label="More information?" (onClick)="openMoreInfoRadar()"></p-button>
+    </div>
+</p-dialog>
+</p-card>

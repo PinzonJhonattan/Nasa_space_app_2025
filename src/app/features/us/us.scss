@@ -1,0 +1,188 @@
+// Estilos para el componente "About Us" moderno usando estándares de la app
+
+// Items de miembros del equipo
+.member-item {
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.12);
+    transform: translateX(8px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
+  }
+
+  &.active {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.18);
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+    transform: translateX(8px) scale(1.02);
+
+    img {
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+  }
+}
+
+// Utility class para hover scale
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+// Panel del logo del equipo
+.team-logo-panel {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  
+  img {
+    filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.3));
+    transition: all 0.5s ease;
+    
+    &:hover {
+      transform: scale(1.05) rotate(2deg);
+      filter: drop-shadow(0 15px 35px rgba(59, 130, 246, 0.4));
+    }
+  }
+}
+
+// Panel de detalles del miembro
+.member-details-panel {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 51, 234, 0.03) 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    opacity: 0.6;
+  }
+  
+  img {
+    transition: all 0.4s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(59, 130, 246, 0.4);
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 6px rgba(59, 130, 246, 0.6);
+    }
+  }
+}
+
+// Enlaces sociales
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px) scale(1.1);
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3b82f6;
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+  }
+
+  &.linkedin:hover {
+    background: rgba(0, 119, 181, 0.2);
+    border-color: #0077b5;
+    color: #0077b5;
+  }
+
+  &.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: rgba(225, 48, 108, 0.2);
+    border-color: #e1306c;
+    color: #e1306c;
+  }
+}
+
+// Animaciones personalizadas
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+}
+
+.team-logo-panel img {
+  animation: float 6s ease-in-out infinite;
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .member-details-panel img {
+    width: 12rem;
+    height: 12rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .member-details-panel {
+    padding: 1.5rem;
+    
+    img {
+      width: 10rem;
+      height: 10rem;
+    }
+    
+    h3 {
+      font-size: 1.8rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+  }
+  
+  .social-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    
+    i {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// Dark mode específico
+@media (prefers-color-scheme: dark) {
+  .member-item {
+    background: rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      background: rgba(59, 130, 246, 0.15);
+    }
+    
+    &.active {
+      background: rgba(59, 130, 246, 0.2);
+    }
+  }
+  
+  .team-logo-panel {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+  }
+  
+  .member-details-panel {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(59, 130, 246, 0.05) 100%);
+  }
+  }

@@ -1,0 +1,167 @@
+body, html, app-root {
+  transition: background-color 0.3s ease;
+}
+
+.surface-slate {
+  background-color: var(--p-slate-50) !important;
+}
+.surface-slate.my-app-dark {
+  background-color: var(--p-slate-900) !important;
+}
+
+body.surface-slate,
+html.surface-slate,
+app-root.surface-slate {
+  background-color: var(--p-slate-50) !important;
+}
+body.surface-slate.my-app-dark,
+html.surface-slate.my-app-dark,
+app-root.surface-slate.my-app-dark {
+  background-color: var(--p-slate-900) !important;
+}
+
+.surface-gray {
+  background-color: var(--p-gray-50) !important;
+}
+.surface-gray.my-app-dark {
+  background-color: var(--p-gray-900) !important;
+}
+
+body.surface-gray,
+html.surface-gray,
+app-root.surface-gray {
+  background-color: var(--p-gray-50) !important;
+}
+body.surface-gray.my-app-dark,
+html.surface-gray.my-app-dark,
+app-root.surface-gray.my-app-dark {
+  background-color: var(--p-gray-900) !important;
+}
+
+.surface-zinc {
+  background-color: var(--p-zinc-50) !important;
+}
+.surface-zinc.my-app-dark {
+  background-color: var(--p-zinc-900) !important;
+}
+
+body.surface-zinc,
+html.surface-zinc,
+app-root.surface-zinc {
+  background-color: var(--p-zinc-50) !important;
+}
+body.surface-zinc.my-app-dark,
+html.surface-zinc.my-app-dark,
+app-root.surface-zinc.my-app-dark {
+  background-color: var(--p-zinc-900) !important;
+}
+
+.surface-neutral {
+  background-color: var(--p-neutral-50) !important;
+}
+.surface-neutral.my-app-dark {
+  background-color: var(--p-neutral-900) !important;
+}
+
+body.surface-neutral,
+html.surface-neutral,
+app-root.surface-neutral {
+  background-color: var(--p-neutral-50) !important;
+}
+body.surface-neutral.my-app-dark,
+html.surface-neutral.my-app-dark,
+app-root.surface-neutral.my-app-dark {
+  background-color: var(--p-neutral-900) !important;
+}
+
+.surface-stone {
+  background-color: var(--p-stone-50) !important;
+}
+.surface-stone.my-app-dark {
+  background-color: var(--p-stone-900) !important;
+}
+
+body.surface-stone,
+html.surface-stone,
+app-root.surface-stone {
+  background-color: var(--p-stone-50) !important;
+}
+body.surface-stone.my-app-dark,
+html.surface-stone.my-app-dark,
+app-root.surface-stone.my-app-dark {
+  background-color: var(--p-stone-900) !important;
+}
+
+.surface-soho {
+  background-color: var(--p-soho-50) !important;
+}
+.surface-soho.my-app-dark {
+  background-color: var(--p-soho-900) !important;
+}
+
+body.surface-soho,
+html.surface-soho,
+app-root.surface-soho {
+  background-color: var(--p-soho-50) !important;
+}
+body.surface-soho.my-app-dark,
+html.surface-soho.my-app-dark,
+app-root.surface-soho.my-app-dark {
+  background-color: var(--p-soho-900) !important;
+}
+
+.surface-viva {
+  background-color: var(--p-viva-50) !important;
+}
+.surface-viva.my-app-dark {
+  background-color: var(--p-viva-900) !important;
+}
+
+body.surface-viva,
+html.surface-viva,
+app-root.surface-viva {
+  background-color: var(--p-viva-50) !important;
+}
+body.surface-viva.my-app-dark,
+html.surface-viva.my-app-dark,
+app-root.surface-viva.my-app-dark {
+  background-color: var(--p-viva-900) !important;
+}
+
+.surface-ocean {
+  background-color: var(--p-ocean-50) !important;
+}
+.surface-ocean.my-app-dark {
+  background-color: var(--p-ocean-900) !important;
+}
+
+body.surface-ocean,
+html.surface-ocean,
+app-root.surface-ocean {
+  background-color: var(--p-ocean-50) !important;
+}
+body.surface-ocean.my-app-dark,
+html.surface-ocean.my-app-dark,
+app-root.surface-ocean.my-app-dark {
+  background-color: var(--p-ocean-900) !important;
+}
+
+.surface-beach {
+  background-color: var(--p-beach-50) !important;
+}
+.surface-beach.my-app-dark {
+  background-color: var(--p-beach-900) !important;
+}
+
+body.surface-beach,
+html.surface-beach,
+app-root.surface-beach {
+  background-color: var(--p-beach-50) !important;
+}
+body.surface-beach.my-app-dark,
+html.surface-beach.my-app-dark,
+app-root.surface-beach.my-app-dark {
+  background-color: var(--p-beach-900) !important;
+}
+
+/*# sourceMappingURL=surface-colors.css.map */

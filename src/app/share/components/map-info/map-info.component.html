@@ -1,0 +1,101 @@
+<!-- map-info.component.html -->
+<div class="p-4">
+
+  <!-- Título principal -->
+  <div class="flex justify-center items-center mb-10 mt-2" *ngIf="showTitle">
+    <h1 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">{{ title }}</h1>
+  </div>
+
+  <!-- Contenedor del mapa -->
+  <div class="mb-8">
+    <p-card>
+      <div class="relative">
+        <div #mapContainer id="map-container" class="h-120 w-full relative"></div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Panel de información reorganizado -->
+  <div class=" space-y-4">
+
+    <!-- Información básica del mapa -->
+    <p-card class="px-7 py-4" *ngIf="showPositionInfo">
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-bold mb-2">Map Information</h3>
+        <div class="w-16 h-1 bg-blue-500 mx-auto rounded"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="text-center">
+          <label class="block text-sm font-semibold mb-3 uppercase tracking-wide">
+            Latitude
+          </label>
+          <p-tag
+            severity="info"
+            [value]="(selectedPosition()?.[1] | number: '1.4-4') || '0.0000'"
+            class="w-full">
+          </p-tag>
+        </div>
+
+        <div class="text-center">
+          <label class="block text-sm font-semibold mb-3 uppercase tracking-wide">
+            Longitude
+          </label>
+          <p-tag
+            severity="info"
+            [value]="(selectedPosition()?.[0] | number: '1.4-4') || '0.0000'"
+            class="w-full">
+          </p-tag>
+        </div>
+
+        <div class="text-center">
+          <label class="block text-sm font-semibold mb-3 uppercase tracking-wide">
+            Zoom Level
+          </label>
+          <p-tag
+            severity="success"
+            [value]="(zoom() | number: '1.1-1') || '0.0'"
+            class="w-full">
+          </p-tag>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-200 pt-6" *ngIf="showControls">
+        <div class="text-center mb-6">
+          <p class="text-sm flex items-center justify-center">
+            <i class="pi pi-map text-blue-500 mr-2"></i>
+            Select a point on the map to get detailed information
+          </p>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <p-button
+            label="Center Position"
+            icon="pi pi-map-marker"
+            (onClick)="centerOnPosition()"
+            [disabled]="!selectedPosition()"
+            class="px-6">
+          </p-button>
+
+          <p-button
+            label="Reset View"
+            icon="pi pi-refresh"
+            [outlined]="true"
+            (onClick)="resetView()"
+            class="px-6">
+          </p-button>
+
+          <p-button
+            label="Clear Selection"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="clearSelection()"
+            [disabled]="!selectedPosition()"
+            class="px-6">
+          </p-button>
+        </div>
+      </div>
+    </p-card>
+
+</div>

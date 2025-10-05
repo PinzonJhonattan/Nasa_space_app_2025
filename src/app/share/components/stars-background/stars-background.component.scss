@@ -1,0 +1,60 @@
+:host {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: block;
+  z-index: 0;
+}
+
+.stars-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.stars-layer {
+  position: absolute;
+  inset: -10%;
+  background-repeat: repeat;
+  animation: drift var(--drift-duration) linear infinite;
+  opacity: var(--layer-opacity);
+}
+
+.layer-1 {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-size: 160px 160px;
+  --drift-duration: 60s;
+  --layer-opacity: 0.35;
+}
+
+.layer-2 {
+  background-image: radial-gradient(rgba(99, 179, 237, 0.25) 1px, transparent 1px);
+  background-size: 200px 200px;
+  --drift-duration: 90s;
+  --layer-opacity: 0.28;
+  animation-direction: reverse;
+}
+
+.layer-3 {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 240px 240px;
+  --drift-duration: 120s;
+  --layer-opacity: 0.22;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-3%, -4%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+:host-context(.my-app-dark) .stars-layer {
+  --layer-opacity: calc(var(--layer-opacity) + 0.1);
+}

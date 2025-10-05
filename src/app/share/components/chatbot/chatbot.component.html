@@ -1,0 +1,124 @@
+<div class="chatbot-container" [ngClass]="{'open': isOpen()}">
+  <!-- FAB: floating button -->
+  <button
+    *ngIf="!isOpen()"
+    class="chatbot-trigger"
+    (click)="toggleChat()"
+    [disabled]="!hasWeatherData"
+    aria-label="Open weather assistant"
+  >
+    <i class="pi pi-comment"></i>
+    <span class="trigger-text">Weather (AI)</span>
+  </button>
+
+  <!-- Window -->
+  <div
+    *ngIf="isOpen()"
+    class="chatbot-window"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Weather assistant"
+  >
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="header-content">
+        <div class="avatar">
+          <i class="pi pi-microchip"></i>
+        </div>
+        <div class="header-info">
+          <span class="header-title">Weather Assistant</span>
+
+          <div *ngIf="locationInfo()" class="location-pill" title="Detected location">
+            <div class="location-info">
+              <i class="pi pi-map-marker"></i>
+              <span class="city">{{ locationInfo()?.city }}</span>
+              <span class="dot">|</span>
+              <span class="country">{{ locationInfo()?.country }}</span>
+            </div>
+            <span class="coords">
+              ({{ locationInfo()?.latitude?.toFixed(2) }}, {{ locationInfo()?.longitude?.toFixed(2) }})
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" (click)="toggleChat()" aria-label="Minimize chat">
+          <i class="pi pi-minus"></i>
+        </button>
+        <button class="icon-btn" (click)="toggleChat()" aria-label="Close chat">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="chatbot-messages" #messagesContainer aria-live="polite">
+      <!-- Sugerencias iniciales como tarjeta dentro del flujo si no hay mensajes -->
+      <div *ngIf="messages()?.length === 0" class="starter-card">
+        <div class="starter-title">Need help getting started?</div>
+        <div class="starter-chips">
+          <button
+            *ngFor="let s of quickSuggestions"
+            (click)="sendQuickMessage(s)"
+            class="chip"
+            type="button"
+          >{{ s }}</button>
+        </div>
+      </div>
+
+      <div *ngFor="let message of messages()" class="message-row" [ngClass]="{'from-user': message.role === 'user', 'from-bot': message.role === 'assistant'}">
+        <div class="bubble" [innerHTML]="formatMessage(message.content)"></div>
+        <div class="time">{{ formatTime(message.timestamp!) }}</div>
+      </div>
+
+      <!-- Location suggestions -->
+      <div *ngIf="locationSuggestions().length > 0" class="location-suggestions-card">
+        <div class="suggestions-chips">
+          <button
+            *ngFor="let suggestion of locationSuggestions()"
+            (click)="sendQuickMessage(suggestion)"
+            class="suggestion-chip"
+            type="button"
+          >{{ suggestion }}</button>
+        </div>
+      </div>
+
+      <!-- Indicador de escritura -->
+      <div *ngIf="isTyping()" class="message-row from-bot">
+        <div class="bubble typing">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chatbot-input">
+      <label class="sr-only" for="chatMessage">Type your message</label>
+      <div class="input-container">
+         <input
+           id="chatMessage"
+           type="text"
+           [(ngModel)]="currentMessage"
+           (keyup.enter)="sendMessage()"
+           (keydown)="($event.ctrlKey && $event.key === 'Enter') ? sendMessage() : null"
+           [disabled]="isTyping()"
+           placeholder="Ask me about the weather for your activity."
+           class="message-input"
+           #messageInput
+           autocomplete="off"
+         />
+        <button
+          class="send-btn"
+          type="button"
+          (click)="sendMessage()"
+           [disabled]="!currentMessage.trim() || isTyping()"
+          aria-label="Send"
+          title="Send"
+        >
+          <i class="pi pi-send"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

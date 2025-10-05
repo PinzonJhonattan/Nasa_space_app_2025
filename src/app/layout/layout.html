@@ -1,0 +1,21 @@
+<div class="layout">
+  <app-stars-background></app-stars-background>
+
+      <!-- Botón flotante de configuración de colores en la parte superior -->
+      <button
+        class="floating-config-btn-top"
+        (click)="openColorConfig()"
+        pButton
+        type="button"
+        icon="pi pi-cog"
+        pTooltip="Color Configuration"
+        tooltipPosition="bottom">
+      </button>
+
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+      <div class="">
+        <app-sidebar />
+      </div>
+    </div>

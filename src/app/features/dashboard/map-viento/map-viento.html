@@ -1,0 +1,56 @@
+<p-card styleClass="weather-card">
+    <ng-template pTemplate="header">
+        <div class="card-header">
+            <span class="card-title">Wind Map</span>
+            <button pButton type="button" icon="pi pi-question-circle" class="p-button-rounded p-button-text" (click)="showDialog()"></button>
+        </div>
+    </ng-template>
+    <div class="map-container">
+        <div #mapContainer id="map" class="map"></div>
+    </div>
+    <p-dialog header="🌬️ Wind Map - Complete Information" 
+            [modal]="true" 
+            [(visible)]="visible" 
+            [style]="{ width: '50rem' }" 
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+            [maximizable]="true"
+            styleClass="weather-dialog">
+        
+        <div class="dialog-content">
+            <div class="flex flex-col items-center justify-center p-8">
+                <h1 class="text-xl md:text-2xl font-bold justify-center items-center mb-4">What is the Wind Map?</h1>
+                
+                <p class="text-center mb-4">
+                    This map shows the air circulation patterns around the planet in real-time. 
+                    Winds are formed by differences in temperature and atmospheric pressure, and follow 
+                    predictable patterns influenced by the Earth's rotation.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-8">
+                    <div class="justify-center items-center">
+                        <h3 class="text-lg md:text-xl font-bold mb-4">Positive Aspects</h3>
+                        <ul >
+                            <li>• Generate clean and renewable wind energy.</li>
+                            <li>• Help regulate global temperatures.</li>
+                            <li>• Facilitate the dispersal of seeds and pollen.</li>
+                            <li>• Power maritime navigation.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="justify-center items-center">
+                        <h3 class="text-lg md:text-xl font-bold mb-4">Negative Aspects</h3>
+                        <ul>
+                            <li>• Can form destructive storms and hurricanes.</li>
+                            <li>• Cause soil erosion in arid areas.</li>
+                            <li>• Complicate commercial flights.</li>
+                            <li>• Contribute to the spread of wildfires.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p-button label="More information?" (onClick)="openMoreInfoWind()"></p-button>
+
+            </div>
+        </div>
+    </p-dialog>
+</p-card>

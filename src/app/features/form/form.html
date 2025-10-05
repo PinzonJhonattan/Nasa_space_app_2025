@@ -1,0 +1,129 @@
+<div class="p-4">
+      <h1 class="text-2xl font-bold mb-6 text-center">Map Form</h1>
+
+      <!-- Mapa sin información -->
+      <div class="mb-6">
+        <app-shared-map
+          [mapConfig]="mapConfig"
+          [initialPosition]="initialMapPosition()"
+          (positionSelected)="onPositionSelected($event)"
+          (positionCleared)="onPositionCleared()">
+        </app-shared-map>
+      </div>
+
+      <!-- Grid with form and map information -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Left side: Form -->
+        <p-card header="Location Data">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Latitude</label>
+              <input
+                pInputText
+                [(ngModel)]="formData.latitude"
+                placeholder="Select from the map..."
+                readonly
+                class="w-full">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Longitude</label>
+              <input
+                pInputText
+                [(ngModel)]="formData.longitude"
+                placeholder="Select from the map..."
+                readonly
+                class="w-full">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Description</label>
+              <input
+                pInputText
+                [(ngModel)]="formData.description"
+                placeholder="Describe the location..."
+                class="w-full">
+            </div>
+
+            <p-button
+              label="Save Location"
+              icon="pi pi-save"
+              (onClick)="saveLocation()"
+              [disabled]="!formData.latitude || !formData.longitude"
+              class="w-full">
+            </p-button>
+          </div>
+        </p-card>
+
+        <!-- Right side: Map information -->
+        <p-card header="Map Information">
+          <!-- Information grid in 3 rows -->
+          <div class="space-y-4">
+            <!-- Latitude -->
+            <div class="flex justify-between items-center">
+              <label class="text-sm font-semibold uppercase tracking-wide">
+                Latitude
+              </label>
+              <p-tag
+                severity="info"
+                [value]="currentLatitude || '0.0000'">
+              </p-tag>
+            </div>
+
+            <!-- Longitude -->
+            <div class="flex justify-between items-center">
+              <label class="text-sm font-semibold uppercase tracking-wide">
+                Longitude
+              </label>
+              <p-tag
+                severity="info"
+                [value]="currentLongitude || '0.0000'">
+              </p-tag>
+            </div>
+
+            <!-- Zoom -->
+            <div class="flex justify-between items-center">
+              <label class="text-sm font-semibold uppercase tracking-wide">
+                Zoom Level
+              </label>
+              <p-tag
+                severity="success"
+                [value]="currentZoom || '0.0'">
+              </p-tag>
+            </div>
+          </div>
+
+          <!-- Separator -->
+          <div class="border-t border-gray-200 my-4"></div>
+
+          <!-- Additional information -->
+          <div class="text-center mb-4">
+            <p class="text-sm text-gray-600 flex items-center justify-center">
+              <i class="pi pi-map text-blue-500 mr-2"></i>
+              {{ hasSelection ? 'Location selected' : 'Pick a point on the map' }}
+            </p>
+          </div>
+
+          <!-- Botones de control -->
+          <div class="grid grid-cols-2 gap-3">
+            <p-button
+              label="Center"
+              icon="pi pi-map-marker"
+              (onClick)="centerOnCurrentPosition()"
+              [disabled]="!hasSelection"
+              size="small">
+            </p-button>
+
+            <p-button
+              label="Clear"
+              icon="pi pi-times"
+              [outlined]="true"
+              (onClick)="clearMapSelection()"
+              [disabled]="!hasSelection"
+              size="small">
+            </p-button>
+          </div>
+        </p-card>
+      </div>
+    </div>

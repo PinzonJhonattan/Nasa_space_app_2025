@@ -1,0 +1,53 @@
+<!-- intro.html -->
+<div class="intro-container" [class.fade-out]="fadeOut">
+  <!-- Canvas de fondo espacial -->
+  <canvas #canvas class="space-canvas"></canvas>
+  
+  <!-- Overlay de contenido -->
+  <div class="content-overlay">
+
+    <div class="background-image">
+      <img src="assets/imagenes/tierra.jpg" alt="logo" />
+    </div>
+    <!-- Logos container -->
+    <div class="logos-container" [class.show]="showLogos">
+      <!-- Logo de la NASA/Competición -->
+      <div class="logo nasa-logo">
+        <div class="logo-placeholder">
+          <img src="assets/imagenes/nasaapp.png" alt="logo" />
+          <span>NASA HACKATHON</span>
+        </div>
+      </div>
+      
+      <!-- VS Divider -->
+      <div class="vs-divider">
+        <span>×</span>
+      </div>
+      
+      <!-- Logo del equipo -->
+      <div class="logo team-logo">
+        <div class="logo-placeholder">
+          <img class="invert" src="assets/imagenes/capi_logo.svg" alt="logo" />
+          <span>TEAM ASTRO</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Texto de carga -->
+    <div class="loading-text" [class.show]="showLogos">
+      <p>Iniciando experiencia espacial...</p>
+      <div class="loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Efectos adicionales -->
+  <div class="cosmic-effects">
+    <div class="shooting-star"></div>
+    <div class="shooting-star" style="animation-delay: 1s;"></div>
+    <div class="shooting-star" style="animation-delay: 2s;"></div>
+  </div>
+</div>

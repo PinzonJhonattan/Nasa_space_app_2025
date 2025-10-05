@@ -1,0 +1,168 @@
+// Estilos para colores de superficie del fondo general
+body, html, app-root {
+  transition: background-color 0.3s ease;
+}
+
+// Colores de superficie para el fondo general
+.surface-slate {
+  background-color: var(--p-slate-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-slate-900) !important;
+  }
+}
+
+// Aplicar a todos los elementos principales
+body.surface-slate,
+html.surface-slate,
+app-root.surface-slate {
+  background-color: var(--p-slate-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-slate-900) !important;
+  }
+}
+
+.surface-gray {
+  background-color: var(--p-gray-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-gray-900) !important;
+  }
+}
+
+body.surface-gray,
+html.surface-gray,
+app-root.surface-gray {
+  background-color: var(--p-gray-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-gray-900) !important;
+  }
+}
+
+.surface-zinc {
+  background-color: var(--p-zinc-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-zinc-900) !important;
+  }
+}
+
+body.surface-zinc,
+html.surface-zinc,
+app-root.surface-zinc {
+  background-color: var(--p-zinc-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-zinc-900) !important;
+  }
+}
+
+.surface-neutral {
+  background-color: var(--p-neutral-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-neutral-900) !important;
+  }
+}
+
+body.surface-neutral,
+html.surface-neutral,
+app-root.surface-neutral {
+  background-color: var(--p-neutral-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-neutral-900) !important;
+  }
+}
+
+.surface-stone {
+  background-color: var(--p-stone-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-stone-900) !important;
+  }
+}
+
+body.surface-stone,
+html.surface-stone,
+app-root.surface-stone {
+  background-color: var(--p-stone-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-stone-900) !important;
+  }
+}
+
+.surface-soho {
+  background-color: var(--p-soho-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-soho-900) !important;
+  }
+}
+
+body.surface-soho,
+html.surface-soho,
+app-root.surface-soho {
+  background-color: var(--p-soho-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-soho-900) !important;
+  }
+}
+
+.surface-viva {
+  background-color: var(--p-viva-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-viva-900) !important;
+  }
+}
+
+body.surface-viva,
+html.surface-viva,
+app-root.surface-viva {
+  background-color: var(--p-viva-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-viva-900) !important;
+  }
+}
+
+.surface-ocean {
+  background-color: var(--p-ocean-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-ocean-900) !important;
+  }
+}
+
+body.surface-ocean,
+html.surface-ocean,
+app-root.surface-ocean {
+  background-color: var(--p-ocean-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-ocean-900) !important;
+  }
+}
+
+.surface-beach {
+  background-color: var(--p-beach-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-beach-900) !important;
+  }
+}
+
+body.surface-beach,
+html.surface-beach,
+app-root.surface-beach {
+  background-color: var(--p-beach-50) !important;
+  
+  &.my-app-dark {
+    background-color: var(--p-beach-900) !important;
+  }
+}

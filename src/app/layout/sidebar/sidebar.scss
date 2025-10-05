@@ -1,0 +1,361 @@
+// sidebar.scss
+
+.modern-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: width 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    background-color: var(--p-surface-200);
+
+
+
+
+
+    &.collapsed {
+        width: 70px;
+    }
+
+
+
+    // User Profile
+    .user-profile {
+        padding: 1rem;
+        margin: 0 1rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+
+        .user-info {
+            flex: 1;
+
+            h4 {
+                margin: 0 0 0.25rem 0;
+                font-size: 0.95rem;
+                font-weight: 600;
+            }
+
+            .user-role {
+                font-size: 0.8rem;
+                opacity: 0.7;
+            }
+        }
+
+        .status-online {
+            font-size: 0.6rem;
+        }
+    }
+
+    // Content
+    .sidebar-content {
+        flex: 1;
+        padding: 0.5rem 0;
+        margin-left: 2rem;
+        margin-top: 0rem;
+        margin-bottom: 0rem;
+        gap: 0rem;
+
+    }
+
+    // Footer
+    .sidebar-footer {
+        padding: 1rem;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+
+        img {
+            filter: brightness(0) invert(1);
+            transition: all 0.3s ease;
+            
+            &:hover {
+                filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+            }
+        }
+
+
+        .storage-info {
+             padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+
+            .storage-header {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .storage-bar {
+                height: 6px;
+                border-radius: 3px;
+                margin-bottom: 0.5rem;
+                overflow: hidden;
+
+                .storage-progress {
+                    height: 100%;
+                    border-radius: 3px;
+                    transition: width 0.3s ease;
+                }
+            }
+
+            .storage-text {
+                font-size: 0.75rem;
+                opacity: 0.7;
+            }
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            font-weight: 600;
+        }
+    }
+}
+
+
+// PanelMenu Styles
+::ng-deep .p-panelmenu {
+    border: none !important;
+}
+.sidebar-menu {
+    ::ng-deep {
+        .p-panelmenu {
+            border: none !important;
+            background: transparent !important;
+        }
+
+        .p-panelmenu-panel {
+            border: none !important;
+            background: transparent !important;
+            margin-bottom: 0 !important;
+        }
+
+        .p-panelmenu-header {
+            border: none !important;
+            background: transparent !important;
+
+            .p-panelmenu-header-link {
+                border: none !important;
+                background: transparent !important;
+            }
+        }
+
+        .p-panelmenu-content {
+            border: none !important;
+            background: transparent !important;
+
+            .p-panelmenu-root-list {
+                background: transparent !important;
+                border: none !important;
+            }
+        }
+
+        // Estilos súper específicos para todos los iconos
+        .p-panelmenu * i,
+        .p-panelmenu * .pi,
+        .p-panelmenu * [class*="pi-"],
+        .p-panelmenu * .p-menuitem-icon,
+        .p-panelmenu i,
+        .p-panelmenu .pi,
+        .p-panelmenu [class*="pi-"],
+        .p-panelmenu .p-menuitem-icon {
+            color: var(--p-primary-color) !important;
+            font-size: 1.1rem !important;
+        }
+
+        // Estilos para headers
+        .p-panelmenu-header * i,
+        .p-panelmenu-header * .pi,
+        .p-panelmenu-header * [class*="pi-"],
+        .p-panelmenu-header i,
+        .p-panelmenu-header .pi,
+        .p-panelmenu-header [class*="pi-"] {
+            font-size: 1.2rem !important;
+        }
+
+        // Quitar todas las líneas divisorias
+        .p-menuitem-separator {
+
+            border: none !important;
+            height: 0 !important;
+        }
+
+        // Estilos específicos para el dropdown de Lista de Actividades
+        // Aplicar solo a los paneles que contienen sub-items (actividades)
+        .p-panelmenu-panel .p-panelmenu-content .p-panelmenu-root-list {
+            max-height: 100px !important;
+            overflow-y: auto !important;
+            padding-right: 4px !important;
+            
+            // Estilizar la barra de scroll
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: var(--p-surface-100);
+                border-radius: 3px;
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: var(--p-surface-400);
+                border-radius: 3px;
+                transition: background 0.3s ease;
+                
+                &:hover {
+                    background: var(--p-surface-500);
+                }
+            }
+        }
+
+        // Para Firefox
+        .p-panelmenu-panel .p-panelmenu-content .p-panelmenu-root-list {
+            scrollbar-width: thin;
+            scrollbar-color: var(--p-surface-400) var(--p-surface-100);
+        }
+
+    }
+}
+
+// Dark mode support - forzar el cambio de variable CSS
+:host-context(.my-app-dark) .modern-sidebar {
+    background-color: var(--p-surface-800) !important;
+
+    // Soporte para modo oscuro en la barra de scroll
+    .sidebar-menu {
+        ::ng-deep {
+            .p-panelmenu-panel .p-panelmenu-content .p-panelmenu-root-list {
+                &::-webkit-scrollbar-track {
+                    background: var(--p-surface-700) !important;
+                }
+                
+                &::-webkit-scrollbar-thumb {
+                    background: var(--p-surface-500) !important;
+                    
+                    &:hover {
+                        background: var(--p-surface-400) !important;
+                    }
+                }
+                
+                // Para Firefox en modo oscuro
+                scrollbar-color: var(--p-surface-500) var(--p-surface-700) !important;
+            }
+        }
+    }
+}
+
+// Estilos globales para iconos del sidebar - último recurso
+::ng-deep .modern-sidebar {
+    .p-panelmenu i,
+    .p-panelmenu .pi,
+    .p-panelmenu [class*="pi-"],
+    .p-panelmenu .p-menuitem-icon {
+        color: var(--p-primary-color) !important;
+    }
+
+    .p-panelmenu-header i,
+    .p-panelmenu-header .pi,
+    .p-panelmenu-header [class*="pi-"] {
+        font-size: 1.2rem !important;
+    }
+}
+
+// Sección del botón Nueva Actividad
+.new-activity-section {
+    padding: 1rem;
+    margin: 0 1rem 1rem 1rem;
+    border-bottom: 1px solid var(--p-surface-border);
+
+    ::ng-deep .new-activity-btn {
+        .p-button {
+            width: 100% !important;
+            background: var(--p-primary-color) !important;
+            border: var(--p-primary-color) !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 1rem !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(var(--p-primary-color-rgb), 0.3) !important;
+            transition: all 0.3s ease !important;
+
+            &:hover {
+                background: var(--p-primary-600) !important;
+                border-color: var(--p-primary-600) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 16px rgba(var(--p-primary-color-rgb), 0.4) !important;
+            }
+
+            &:active {
+                transform: translateY(0) !important;
+            }
+
+            .p-button-label {
+                font-size: 0.95rem !important;
+            }
+
+            .p-button-icon {
+                font-size: 1.1rem !important;
+                margin-right: 0.5rem !important;
+            }
+        }
+    }
+}
+
+// Dark mode support para el botón
+:host-context(.my-app-dark) {
+    .new-activity-section {
+        border-bottom-color: var(--p-surface-600);
+
+        ::ng-deep .new-activity-btn .p-button {
+            background: var(--p-primary-400) !important;
+            border-color: var(--p-primary-400) !important;
+
+            &:hover {
+                background: var(--p-primary-300) !important;
+                border-color: var(--p-primary-300) !important;
+            }
+        }
+    }
+
+    .sidebar-footer {
+        img {
+            filter: brightness(0) invert(1);
+            
+            &:hover {
+                filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(59, 130, 246, 0.7));
+            }
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .modern-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+
+        &.mobile-open {
+            transform: translateX(0);
+        }
+    }
+
+    .new-activity-section {
+        padding: 0.75rem;
+        margin: 0 0.5rem 0.75rem 0.5rem;
+
+        ::ng-deep .new-activity-btn .p-button {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.9rem !important;
+
+            .p-button-icon {
+                font-size: 1rem !important;
+            }
+        }
+    }
+}
