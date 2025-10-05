@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clima de Eventos</title>
+  <title>Clima de Eventos - NASA + Open-Meteo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -83,6 +83,25 @@
       opacity: 1;
       visibility: visible;
     }
+
+    .data-source-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .badge-nasa {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .badge-meteo {
+      background-color: #059669;
+      color: white;
+    }
   </style>
 </head>
 
@@ -90,7 +109,8 @@
 
   <div class="container">
     <h1 class="text-3xl font-bold text-center text-gray-800">Probabilidad de Condiciones del Evento</h1>
-    <p class="text-center text-gray-600">Selecciona tu ubicación en el mapa, la fecha y hora, para ver el pronóstico.
+    <p class="text-center text-gray-600">
+      Datos históricos de <span class="badge-nasa data-source-badge">NASA POWER</span> y pronósticos de <span class="badge-meteo data-source-badge">Open-Meteo</span>
     </p>
 
     <div id="map"></div>
@@ -134,10 +154,13 @@
     </button>
 
     <div id="prognosis-result" class="prognosis-card hidden">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Pronóstico de Condiciones</h2>
+      <h2 class="text-xl font-bold mb-2 text-gray-800">
+        Pronóstico de Condiciones
+        <span id="data-source-badge" class="data-source-badge"></span>
+      </h2>
 
       <div id="loading" class="text-center text-gray-500 hidden">
-        Cargando pronóstico...
+        Cargando datos...
       </div>
 
       <div id="prognosis-data" class="hidden">
@@ -154,15 +177,13 @@
           <tbody id="forecast-table-body">
           </tbody>
         </table>
-        <p class="text-center text-sm text-gray-500 mb-4">Los datos del pronóstico están disponibles hasta 16 días
-          en el futuro.</p>
 
         <h3 class="text-lg font-semibold mb-2 text-gray-800">Probabilidad de Incomodidad</h3>
         <div id="probabilities-container" class="space-y-4">
         </div>
       </div>
       <div id="error-message" class="text-red-500 text-center hidden">
-        No se pudo obtener el pronóstico para la fecha o rango de tiempo seleccionado.
+        No se pudo obtener el pronóstico para la fecha seleccionada.
       </div>
     </div>
   </div>
@@ -184,6 +205,7 @@
       const probabilitiesContainer = document.getElementById('probabilities-container');
       const toastElement = document.getElementById('toast');
       const eventSelect = document.getElementById('event');
+      const dataSourceBadge = document.getElementById('data-source-badge');
 
       let map, marker;
       let currentCoords = [4.7110, -74.0721]; // Coordenadas de Bogotá, Colombia por defecto
@@ -263,8 +285,78 @@
         }
       };
 
-      // Función para obtener el pronóstico de la API
-      async function getPrognosis(lat, lon, eventDate, start, end) {
+      // Función para determinar si usar NASA o Open-Meteo
+      function getDataSource(eventDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(eventDate);
+        selectedDate.setHours(0, 0, 0, 0);
+
+        // Si la fecha es hoy o futura, usar Open-Meteo
+        if (selectedDate >= today) {
+          return 'openmeteo';
+        }
+        // Si la fecha es pasada, usar NASA POWER
+        return 'nasa';
+      }
+
+      // Función para obtener datos de NASA POWER (históricos)
+      async function getPrognosisNASA(lat, lon, eventDate, start, end) {
+        const formattedDate = eventDate.replaceAll("-", "");
+        
+        // API de NASA POWER - Parámetros correctos para hourly
+        const apiURL = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M,WS10M,RH2M,PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${formattedDate}&end=${formattedDate}&format=JSON`;
+
+        try {
+          const response = await fetch(apiURL);
+          const data = await response.json();
+
+          const params = data.properties?.parameter;
+          if (!params) {
+            showToast("No hay datos disponibles de NASA POWER para esta fecha.");
+            return null;
+          }
+
+          // Extraer parámetros de NASA POWER
+          const temperature = params.T2M || {};
+          const windSpeed = params.WS10M || {};
+          const humidity = params.RH2M || {};
+          const precipitation = params.PRECTOTCORR || {};
+
+          // Parsear horas de inicio y fin
+          const [startHours] = start.split(':').map(Number);
+          const [endHours] = end.split(':').map(Number);
+          
+          let hourlyData = {
+            time: [],
+            temp: [],
+            humidity: [],
+            wind: [],
+            precipitation: []
+          };
+
+          // Generar datos para cada hora en el rango seleccionado
+          for (let hour = startHours; hour <= endHours; hour++) {
+            const hourKey = formattedDate + String(hour).padStart(2, '0');
+            const timeString = `${eventDate}T${String(hour).padStart(2, '0')}:00:00`;
+            
+            hourlyData.time.push(timeString);
+            hourlyData.temp.push(temperature[hourKey] !== undefined ? temperature[hourKey] : 20);
+            hourlyData.humidity.push(humidity[hourKey] !== undefined ? humidity[hourKey] : 60);
+            hourlyData.wind.push((windSpeed[hourKey] !== undefined ? windSpeed[hourKey] : 3) * 3.6); // m/s a km/h
+            hourlyData.precipitation.push(precipitation[hourKey] !== undefined ? precipitation[hourKey] : 0);
+          }
+
+          return { hourly: hourlyData, source: 'NASA POWER' };
+
+        } catch (error) {
+          console.error("Error obteniendo datos de NASA POWER:", error);
+          return null;
+        }
+      }
+
+      // Función para obtener datos de Open-Meteo (pronósticos)
+      async function getPrognosisOpenMeteo(lat, lon, eventDate, start, end) {
         const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation&forecast_days=16&timezone=auto`;
 
         try {
@@ -297,21 +389,33 @@
             precipitation: data.hourly.precipitation.slice(startIndex, endIndex + 1)
           };
 
-          currentEventData = {
+          return {
             hourly: {
               time: slicedData.time,
               temp: slicedData.temperature_2m,
               humidity: slicedData.relative_humidity_2m,
               wind: slicedData.wind_speed_10m,
               precipitation: slicedData.precipitation,
-            }
+            },
+            source: 'Open-Meteo'
           };
 
-          return currentEventData;
-
         } catch (error) {
-          console.error("Error fetching weather data:", error);
+          console.error("Error obteniendo datos de Open-Meteo:", error);
           return null;
+        }
+      }
+
+      // Función principal que decide qué API usar
+      async function getPrognosis(lat, lon, eventDate, start, end) {
+        const source = getDataSource(eventDate);
+        
+        if (source === 'nasa') {
+          showToast("📡 Obteniendo datos históricos de NASA POWER...");
+          return await getPrognosisNASA(lat, lon, eventDate, start, end);
+        } else {
+          showToast("🌤️ Obteniendo pronóstico de Open-Meteo...");
+          return await getPrognosisOpenMeteo(lat, lon, eventDate, start, end);
         }
       }
 
@@ -323,6 +427,15 @@
         if (!eventData || !eventData.hourly || eventData.hourly.time.length === 0) {
           showToast("No hay datos disponibles para el rango de tiempo seleccionado.");
           return;
+        }
+
+        // Actualizar badge de fuente de datos
+        if (eventData.source === 'NASA POWER') {
+          dataSourceBadge.textContent = 'NASA POWER (Datos Históricos)';
+          dataSourceBadge.className = 'data-source-badge badge-nasa';
+        } else {
+          dataSourceBadge.textContent = 'Open-Meteo (Pronóstico)';
+          dataSourceBadge.className = 'data-source-badge badge-meteo';
         }
 
         const eventType = eventSelect.value;
@@ -350,12 +463,12 @@
           const row = document.createElement('tr');
           row.className = "border-b border-gray-200 hover:bg-gray-50";
           row.innerHTML = `
-                        <td class="py-2">${new Date(hour).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</td>
-                        <td class="py-2">${temp.toFixed(1)}</td>
-                        <td class="py-2">${wind.toFixed(1)}</td>
-                        <td class="py-2">${humidity.toFixed(1)}</td>
-                        <td class="py-2">${precip.toFixed(1)}</td>
-                    `;
+            <td class="py-2">${new Date(hour).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</td>
+            <td class="py-2">${temp.toFixed(1)}</td>
+            <td class="py-2">${wind.toFixed(1)}</td>
+            <td class="py-2">${humidity.toFixed(1)}</td>
+            <td class="py-2">${precip.toFixed(1)}</td>
+          `;
           forecastTableBody.appendChild(row);
 
           let isIncomfortable = false;
@@ -378,14 +491,14 @@
 
           const bar = document.createElement('div');
           bar.innerHTML = `
-                        <div class="label-container">
-                            <span class="font-semibold text-gray-700">${prob.label}</span>
-                            <span>${percentage.toFixed(0)}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${percentage}%; background-color: ${getProgressBarColor(percentage)};"></div>
-                        </div>
-                    `;
+            <div class="label-container">
+              <span class="font-semibold text-gray-700">${prob.label}</span>
+              <span>${percentage.toFixed(0)}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${percentage}%; background-color: ${getProgressBarColor(percentage)};"></div>
+            </div>
+          `;
           probabilitiesContainer.appendChild(bar);
         }
 
@@ -409,19 +522,28 @@
         const eventDate = eventDateInput.value;
         const startHour = startHourInput.value;
         const endHour = endHourInput.value;
-        const today = new Date().toISOString().slice(0, 10);
-        const maxDate = new Date();
-        maxDate.setDate(maxDate.getDate() + 15);
-        const maxDateStr = maxDate.toISOString().slice(0, 10);
 
-        if (eventDate < today || eventDate > maxDateStr) {
-          showToast(`Por favor, selecciona una fecha en los próximos 16 días (hasta ${maxDateStr}).`);
+        if (!eventDate) {
+          showToast("Por favor, selecciona una fecha.");
           loadingIndicator.classList.add('hidden');
           return;
         }
 
         if (startHour === "" || endHour === "") {
           showToast("Por favor, selecciona una hora de inicio y fin.");
+          loadingIndicator.classList.add('hidden');
+          return;
+        }
+
+        // Validar rango de fechas
+        const today = new Date();
+        const selectedDate = new Date(eventDate);
+        const minDate = new Date('1981-01-01');
+        const maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 15);
+
+        if (selectedDate < minDate || selectedDate > maxDate) {
+          showToast(`Selecciona una fecha entre 1981-01-01 (NASA) y ${maxDate.toISOString().slice(0, 10)} (Open-Meteo).`);
           loadingIndicator.classList.add('hidden');
           return;
         }

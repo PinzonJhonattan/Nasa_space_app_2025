@@ -21,6 +21,7 @@ import { ActivityConfigService } from '../../share/services/activity-config.serv
 import { Activity } from '../../share/models/activity.model';
 import { PdfGeneratorService } from '../../share/services/pdf-generator.service';
 import { WeatherData } from '../../share/models/weather-data.model';
+import { WeatherPredictionService } from '../../share/services/weather-prediction.service';
 import { Subject, takeUntil } from 'rxjs';
 
 interface ProbabilityResult {
@@ -49,6 +50,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private activityConfigService = inject(ActivityConfigService);
   private pdfGeneratorService = inject(PdfGeneratorService);
+  private weatherPredictionService = inject(WeatherPredictionService);
   private destroy$ = new Subject<void>();
 
   // Signals para el clima
@@ -125,12 +127,12 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   private initializeDateLimits() {
     const today = new Date();
 
-    // Fecha mínima: hoy
-    this.minDate = new Date(today);
+    // Fecha mínima: 1981 (inicio de datos de NASA POWER)
+    this.minDate = new Date('1981-01-01');
 
-    // Fecha máxima: 15 días después de hoy
+    // Fecha máxima: 1 año en el futuro (usamos predicción basada en históricos)
     this.maxDate = new Date(today);
-    this.maxDate.setDate(today.getDate() + 15);
+    this.maxDate.setFullYear(today.getFullYear() + 1);
   }
 
   // Inicializar configuración de charts
@@ -343,7 +345,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Get weather forecast
+  // Get weather forecast usando el servicio de predicción inteligente
   async getWeatherForecast() {
     const position = this.selectedPosition();
     if (!position) {
@@ -368,47 +370,32 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
 
     try {
       const [lng, lat] = position;
-      const eventDate = this.date;
-      const dateStr = this.formatDate(eventDate);
 
-      // Validar fecha
-      const today = new Date();
-      const maxDate = new Date();
-      maxDate.setDate(maxDate.getDate() + 15);
+      // Usar el servicio de predicción inteligente
+      const predictionResult = await this.weatherPredictionService.getWeatherPrediction(
+        lat,
+        lng,
+        this.date,
+        this.startTime,
+        this.endTime
+      );
 
-      if (eventDate < today || eventDate > maxDate) {
-        throw new Error('The date must be between today and the next 15 days');
-      }
-
-      const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation&forecast_days=16&timezone=auto`;
-
-      const response = await fetch(apiURL);
-      const data = await response.json();
-
-      const eventDateTimeStart = new Date(`${dateStr}T${this.startTime}:00`);
-      const eventDateTimeEnd = new Date(`${dateStr}T${this.endTime}:00`);
-
-      const startIndex = data.hourly.time.findIndex((t: string) => {
-        const time = new Date(t);
-        return time.getTime() === eventDateTimeStart.getTime();
-      });
-
-      const endIndex = data.hourly.time.findIndex((t: string) => {
-        const time = new Date(t);
-        return time.getTime() === eventDateTimeEnd.getTime();
-      });
-
-      if (startIndex === -1 || endIndex === -1 || startIndex > endIndex) {
-        throw new Error('No forecast was found for the selected time range');
-      }
-
+      // Convertir resultado de predicción a WeatherData
       const weatherData: WeatherData = {
-        time: data.hourly.time.slice(startIndex, endIndex + 1),
-        temp: data.hourly.temperature_2m.slice(startIndex, endIndex + 1),
-        humidity: data.hourly.relative_humidity_2m.slice(startIndex, endIndex + 1),
-        wind: data.hourly.wind_speed_10m.slice(startIndex, endIndex + 1),
-        precipitation: data.hourly.precipitation.slice(startIndex, endIndex + 1)
+        time: predictionResult.time,
+        temp: predictionResult.temp,
+        humidity: predictionResult.humidity,
+        wind: predictionResult.wind,
+        precipitation: predictionResult.precipitation,
+        shortwave_radiation: new Array(predictionResult.time.length).fill(500)
       };
+
+      // Mostrar información sobre la fuente de datos
+      console.log(`📊 Data source: ${predictionResult.source}`);
+      if (predictionResult.confidence) {
+        const avgConfidence = predictionResult.confidence.reduce((a, b) => a + b, 0) / predictionResult.confidence.length;
+        console.log(`🎯 Average confidence: ${avgConfidence.toFixed(0)}%`);
+      }
 
       this.weatherData.set(weatherData);
       this.calculateProbabilities(weatherData);
@@ -583,7 +570,7 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
       calor: { temp: 28, prob: 0.8 },
       viento: { speed: 20, prob: 0.7 },
       humedo: { humidity: 80, prob: 0.6 },
-      lluvia: { precip: 1, prob: 0.9 }
+      lluvia: { precip: 5, prob: 0.6 }  // Aumentado a 5mm, prob 0.6
     };
 
     const activityThresholds: Record<string, any> = {
@@ -592,84 +579,84 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
         calor: { temp: 28, prob: 0.8 },
         viento: { speed: 20, prob: 0.7 },
         humedo: { humidity: 80, prob: 0.6 },
-        lluvia: { precip: 1, prob: 0.9 }
+        lluvia: { precip: 4, prob: 0.6 }  // Aumentado a 4mm, prob 0.6
       },
       'pesca': {
         frio: { temp: 5, prob: 0.7 },
         calor: { temp: 32, prob: 0.6 },
         viento: { speed: 15, prob: 0.9 }, // Muy sensible al viento
         humedo: { humidity: 85, prob: 0.5 },
-        lluvia: { precip: 2, prob: 0.8 }
+        lluvia: { precip: 5, prob: 0.5 }  // Aumentado a 5mm, prob 0.5
       },
       'natacion': {
         frio: { temp: 18, prob: 0.9 }, // Requiere temperaturas más altas
         calor: { temp: 35, prob: 0.7 },
         viento: { speed: 25, prob: 0.8 },
         humedo: { humidity: 90, prob: 0.3 }, // Menos sensible a humedad
-        lluvia: { precip: 0.5, prob: 0.9 }
+        lluvia: { precip: 3, prob: 0.7 }  // Aumentado a 3mm, prob 0.7
       },
       'playa': {
         frio: { temp: 20, prob: 0.9 },
         calor: { temp: 35, prob: 0.8 },
         viento: { speed: 30, prob: 0.7 },
         humedo: { humidity: 90, prob: 0.5 },
-        lluvia: { precip: 0.2, prob: 1 }
+        lluvia: { precip: 2.5, prob: 0.7 }  // Aumentado a 2.5mm, prob 0.7
       },
       'camping': {
         frio: { temp: 5, prob: 1 },
         calor: { temp: 32, prob: 0.8 },
         viento: { speed: 25, prob: 0.9 },
         humedo: { humidity: 90, prob: 0.7 },
-        lluvia: { precip: 1.5, prob: 1 }
+        lluvia: { precip: 4, prob: 0.8 }  // Aumentado a 4mm, prob 0.8
       },
       'vuelos': {
         frio: { temp: -10, prob: 0.8 },
         calor: { temp: 40, prob: 0.8 },
         viento: { speed: 15, prob: 0.95 }, // Muy crítico para vuelos
         humedo: { humidity: 95, prob: 0.7 },
-        lluvia: { precip: 0.1, prob: 0.9 }
+        lluvia: { precip: 1.5, prob: 0.6 }  // Aumentado a 1.5mm, prob 0.6
       },
       'ganaderia': {
         frio: { temp: 0, prob: 0.9 },
         calor: { temp: 35, prob: 0.9 },
         viento: { speed: 30, prob: 0.6 },
         humedo: { humidity: 85, prob: 0.5 },
-        lluvia: { precip: 5, prob: 0.7 }
+        lluvia: { precip: 10, prob: 0.5 }  // Aumentado a 10mm, prob 0.5
       },
       'navegacion': {
         frio: { temp: 5, prob: 0.7 },
         calor: { temp: 35, prob: 0.6 },
         viento: { speed: 20, prob: 0.95 }, // Muy crítico para navegación
         humedo: { humidity: 90, prob: 0.4 },
-        lluvia: { precip: 2, prob: 0.8 }
+        lluvia: { precip: 5, prob: 0.6 }  // Aumentado a 5mm, prob 0.6
       },
       'eventos': {
         frio: { temp: 12, prob: 0.8 },
         calor: { temp: 30, prob: 0.9 },
         viento: { speed: 20, prob: 0.8 },
         humedo: { humidity: 80, prob: 0.6 },
-        lluvia: { precip: 0.5, prob: 1 }
+        lluvia: { precip: 3, prob: 0.7 }  // Aumentado a 3mm, prob 0.7
       },
       'riego': {
         frio: { temp: 0, prob: 0.5 },
         calor: { temp: 40, prob: 0.7 }, // El calor extremo causa evaporación rápida
         viento: { speed: 25, prob: 0.8 }, // Dispersa el agua
         humedo: { humidity: 95, prob: 0.3 },
-        lluvia: { precip: 5, prob: 0.9 } // Evitar con lluvia fuerte
+        lluvia: { precip: 12, prob: 0.6 }  // Aumentado a 12mm, prob 0.6
       },
       'cosecha': {
         frio: { temp: 5, prob: 0.6 },
         calor: { temp: 35, prob: 0.7 },
         viento: { speed: 30, prob: 0.6 },
         humedo: { humidity: 85, prob: 0.5 },
-        lluvia: { precip: 2, prob: 0.95 } // Muy crítico para cosecha
+        lluvia: { precip: 5, prob: 0.8 }  // Aumentado a 5mm, prob 0.8
       },
       'carretera': {
         frio: { temp: -5, prob: 0.8 },
         calor: { temp: 40, prob: 0.7 },
         viento: { speed: 30, prob: 0.8 }, // Vientos laterales peligrosos
         humedo: { humidity: 95, prob: 0.6 },
-        lluvia: { precip: 1, prob: 0.9 }
+        lluvia: { precip: 4, prob: 0.7 }  // Aumentado a 4mm, prob 0.7
       }
     };
 
@@ -732,12 +719,12 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   // Obtener icono para cada condición climática
   getConditionIcon(label: string): string {
     const iconMap: Record<string, string> = {
-      'Cold Conditions': 'pi pi-snowflake',
+      'Cold Conditions': 'pi pi-moon',
       'Hot Conditions': 'pi pi-sun',
       'Windy Conditions': 'pi pi-flag-fill',
       'High Humidity': 'pi pi-cloud',
       'Precipitation': 'pi pi-bolt',
-      'Very Cold': 'pi pi-snowflake',
+      'Very Cold': 'pi pi-moon',
       'Very Hot': 'pi pi-sun',
       'Very Windy': 'pi pi-flag-fill',
       'Very Humid': 'pi pi-cloud',

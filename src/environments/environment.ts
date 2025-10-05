@@ -7,4 +7,3 @@ export const environment = {
   geminiApiKey: 'AIzaSyBsZBZUo10nJKSZdB3E6rmMuflYSvbVqzQ',
   mapTilerApiKey: 'jv7aoRzBMeaiHepUjOnC'
 };
-

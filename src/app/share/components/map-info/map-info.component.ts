@@ -31,6 +31,7 @@ interface WeatherData {
   humidity: number[];
   wind: number[];
   precipitation: number[];
+  shortwave_radiation: number[];
 }
 
 interface EventThresholds {
@@ -382,7 +383,7 @@ export class MapInfoComponent implements OnInit, OnDestroy {
         throw new Error('La fecha debe estar entre hoy y los próximos 15 días');
       }
 
-      const apiURL = `${environment.openMeteoUrl}?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation&forecast_days=16&timezone=auto`;
+      const apiURL = `${environment.openMeteoUrl}?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,shortwave_radiation&forecast_days=16&timezone=auto`;
 
       const response = await fetch(apiURL);
       const data = await response.json();
@@ -409,7 +410,8 @@ export class MapInfoComponent implements OnInit, OnDestroy {
         temp: data.hourly.temperature_2m.slice(startIndex, endIndex + 1),
         humidity: data.hourly.relative_humidity_2m.slice(startIndex, endIndex + 1),
         wind: data.hourly.wind_speed_10m.slice(startIndex, endIndex + 1),
-        precipitation: data.hourly.precipitation.slice(startIndex, endIndex + 1)
+        precipitation: data.hourly.precipitation.slice(startIndex, endIndex + 1),
+        shortwave_radiation: data.hourly.shortwave_radiation.slice(startIndex, endIndex + 1)
       };
 
       this.weatherData.set(weatherData);

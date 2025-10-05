@@ -4,4 +4,5 @@ export interface WeatherData {
   humidity: number[];
   wind: number[];
   precipitation: number[];
+  shortwave_radiation: number[];
 }
